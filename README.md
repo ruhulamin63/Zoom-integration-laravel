@@ -1,5 +1,6 @@
 # Laravel Zoom
-### Using this domo project then used in given link
+### Using this domo project then used in given link.
+
 ```bash
 git clone https://github.com/ruhulamin63/Zoom-integration-laravel.git
 ```
