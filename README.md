@@ -725,6 +725,9 @@ Coming soon
 
 Coming soon
 
+```bash
+https://github.com/MacsiDigital/laravel-zoom
+```
 ## To Do's
 
 - Documentation Site
