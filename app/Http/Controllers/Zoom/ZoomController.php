@@ -47,6 +47,7 @@ class ZoomController extends Controller
 
             $meeting = $this->createMeeting($request);
 
+//            dd('test');
 
             Test::create([
                 'user_id'=> 1,
