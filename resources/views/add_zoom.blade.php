@@ -18,7 +18,7 @@
 
         <div class="form-group">
             <label for="start_time">Start Date/Time</label>
-            <input type="date" class="form-control" id="start_time" name="start_time">
+            <input type="datetime-local" class="form-control" id="start_time" name="start_time">
         </div>
         <div class="form-group">
             <label for="topic">Topic</label>

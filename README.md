@@ -1,14 +1,52 @@
 # Laravel Zoom
-### Using this domo project then used in given link.
+### Using this domo project
 
 ```bash
 git clone https://github.com/ruhulamin63/Zoom-integration-laravel.git
 ```
+```bash
+composer install
+```
+```bash
+cp .env.example .env
+```
+```bash
+php artisan key:generate
+```
+#### create database and change .env file DB_DATABASE=laravel to DB_DATABASE=xxx
+```bash
+php artisan migate:fresh --seed
+```
+## Zoom JWT Setup
 
-## Laravel Zoom API Client New Setup
+Login zoom account
+```bash
+https://www.zoom.us/
+```
+
+Goto zoom marketplace & create App credentials then goto here JWT option
+```bash
+https://marketplace.zoom.us/develop/create
+```
+## Or
+
+Goto create app credentials and copy (API Key) & (API Secret) insert into <br>
+You need to add ZOOM_CLIENT_KEY and ZOOM_CLIENT_SECRET insert into your .env file.
+
+```bash
+https://marketplace.zoom.us/develop/apps/idw-K0NASLmpKlm9ldj17w/credentials
+```
+
+### ==================== Enjoy git project ==================
+
+## On the other hand laravel Zoom API Client New Setup
 Laravel Zoom API Package
 
 ## Installation
+
+```bash
+composer create-project --prefer-dist laravel/laravel:^8 zoom-project
+```
 
 You can install the package via composer:
 
@@ -43,695 +81,219 @@ Also note the tokenLife, there were numerous users of the old API who said the t
 
 That should be it.
 
-## Usage
+## Zoom JWT Setup
 
-Everything has been set up to be similar to Laravel syntax. So hopefully using it will be similar to Eloquent, right down to relationships.
-
-Unfortunately the Zoom API is not very uniform and is a bit all over the place.  But we have hopefully made this uniform and logical. However you will still need to read the [Zoom documentation](https://marketplace.zoom.us/docs/api-reference/introduction) to know what is and isn't possible.
-
-At present we cover the following modules
-
-- Users
-- Roles
-- Meetings
-- Past Meetings
-- Webinars
-- Past Webinars
-- Recordings
-
-Doesn't look like a lot but Meetings and Webinars are the 2 big modules and includes, polls, registration questions, registrants, panelists and various other relationships.
-
-Also note that some of the functionality is only available to certain plan types.  Check the [Zoom documentation](https://marketplace.zoom.us/docs/api-reference/introduction).
-
-### Connecting
-
-To get an access point you can simply create a new instance and the resource.
-
-``` php
-    $user = Zoom::user();
+Login zoom account
+```bash
+https://www.zoom.us/
 ```
 
-### Accessing models
+Goto zoom marketplace & create App credentials then goto here JWT option
+```bash
+https://marketplace.zoom.us/develop/create
+```
+## Or
 
-There are 2 main ways to work with models, to call them directly from the access entry point via a facade, or to call them in the standard php 'new' method and pass in the access entry point
+Goto create app credentials and copy (API Key) & (API Secret) insert into <br>
+You need to add ZOOM_CLIENT_KEY and ZOOM_CLIENT_SECRET into your .env file.
 
-``` php
-    $user = Zoom::user();
-
-    //or
-    
-    $zoom = new \MacsiDigital\Zoom\Support\Entry;
-    $user = new \MacsiDigital\Zoom\User($zoom);
+```bash
+https://marketplace.zoom.us/develop/apps/idw-K0NASLmpKlm9ldj17w/credentials
 ```
 
-### Working with models
-
-As noted we are aiming for functionality similar to Laravel, so most things that you can do in Laravel you can do here, with exception to any database specific functionality, as we are not using databases.
-
-``` php
-    $user = Zoom::user()->create([...]);
-
-    $user = Zoom::user()->find(...);
-
-    $users = Zoom::user()->all();
-
-    $meetings = Zoom::user()->find(...)->meetings;
-
-    // Even this
-    
-    $user = Zoom::user()->find(...); 
-    $meeting = Zoom::meeting()->make([...]);
-    $user->meetings()->save($meeting);
-```
-
-Each model may also have some custom functions where Zoom has some unique functionality. We try to list all this below, under Resources.
-
-``` php
-    $user = Zoom::user()->create([...]);
-
-    $user->updateProfilePicture($image); // Path to image
-```
-
-### Common get functions
-
-#### First
-
-We utilise the first function to return the first record from the record set.  This will return an instantiated model.
-
-``` php
-    $user = Zoom::user()->where('status', 'active')->first();
-```
-
-#### Find
-
-We utilise the find function to return a record by searching for it by a unique attribute.  This will return an instantiated model.
-
-``` php
-    $user = Zoom::user()->find('id');
-
-    //or
-
-    $user = Zoom::user()->find('email@address.com');
-
-    // for most models this is only the id.  The past models utilise the uuid instead of the id.
-```
-
-#### All
-
-The find all function returns a customised Laravel Collection, which we call a resultset.
-
-``` php
-  $users = Zoom::user()->all();
-```
-
-When calling the all function we will make up to 5 API calls to retrieve all the data, so 5 x 300 records (the max allowed), i.e. up to 1500 records per request. This can be amended in the config by updating 'max_api_calls_per_request'.
-
-More info below in ResultSets.
-
-#### Get
-
-We utilise the get function when we want to retrieve filtered records.  Note that Zoom doesn't offer much in the way of filters. So check the documentation.
-
-``` php
-    $users = Zoom::user()->where('status', 'active')->get();
-
-    // We can also pass
-    
-    $users = Zoom::user()->where('status', '=', 'active')->get();
-```
-
-When using the get call we will automatically paginate results, which by default is 30 records.  You can increase/decrease this by calling the paginate function.
-
-``` php
-    $users = Zoom::user()->where('status', 'active')->paginate(100)->get(); // will return 100 records
-``` 
-
-You can disable the pagination, so it behaves the same as the all() function
-
-``` php
-    $users = Zoom::user()->where('status', 'active')->setPaginate(false)->setPerPage(300)->get(); // will return 300 records * 5 request (or amount set in config) = 1500 records
-```
-
-There are a few additional helper functions.
-
-If our data set is larger than the returned records then we call the nextPage() function to return the next page of records.
-
+### Create view index.blade.php file
 ```php
-    $meetings->nextPage();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <a href="{{ route('zoom.create') }}" type="button" class="btn btn-success">Create</a>
+    </div>
+    <table class="table">
+        <br>
+        <thead>
+        <tr>
+            <th>Meeting_Id</th>
+            <th>Topic</th>
+            <th>Start Time</th>
+            <th>Duration</th>
+            <th>Password</th>
+            <th>Start Url</th>
+            <th>Join Url</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach($zoomData as $data)
+                <tr>
+                    <td>{{ $data->meeting_id }}</td>
+                    <td>{{ $data->topic }}</td>
+                    <td>{{ $data->start_time }}</td>
+                    <td>{{ $data->duration }}</td>
+                    <td>{{ $data->password }}</td>
+                    <td>
+                        <a href="{{$data->start_url}}" class="btn btn-primary">Start</a>
+                    </td>
+                    <td>
+                        <a href="{{$data->join_url}}" class="btn btn-primary">Join</a>
+                    </td>
+                </tr>
+            @endforeach
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
+
 ```
-
-We can then also navigate back a page by calling the previousPage() function.  When doing this we will return cached results rather than querying the API.
-
+### Create add.blade.php file
 ```php
-    $meetings->previousPage();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Zoom Add interface</h2>
+    <form action="{{ route('zoom.store') }}" method="post">
+        @csrf
+
+        <div class="form-group">
+            <label for="start_time">Start Date/Time</label>
+            <input type="datetime-local" class="form-control" id="start_time" name="start_time">
+        </div>
+        <div class="form-group">
+            <label for="topic">Topic</label>
+            <input type="type" class="form-control" id="topic" name="topic">
+        </div>
+        <div class="form-group">
+            <label for="duration">Duration</label>
+            <input type=number class="form-control" id="duration" name="duration">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
+
 ```
 
-There is also a function to accumulate more records, if you call the getNextRecords() function it will retrieve the next 1500 results and add them to the current records, so you can then run through 3000 records if required.
+### Create Controllers
 
+```bash
+php artisan make:controller zoom/ZoomController
+```
+
+### How to create function insert into app/Http Traits folders MeetingZoomTrait.php class
 ```php
-    $meetings->getNextRecords();
+ public function createMeeting($request){
+        $user = Zoom::user()->first();
+
+        $meetingData = [
+            'topic' => $request->topic,
+            'duration' => $request->duration,
+            'password' => $request->password,
+            'start_time' => $request->start_time,
+            //'timezone' => config('zoom.timezone'),
+            'timezone' => 'Asia/Dhaka',
+        ];
+
+        $meeting = Zoom::meeting()->make($meetingData);
+
+        $meeting->settings()->make([
+           'join_before_host'=> false,
+           'host_video'=> false,
+           'participant_video'=> false,
+           'mute_upon_entry'=> true,
+           'waiting_room'=> true,
+           'approval_type'=> config('zoom.approval_type'),
+           'audio'=> config('zoom.audio'),
+           'auto_recording'=> config('zoom.auto_recording'),
+        ]);
+
+        return $user->meetings()->save($meeting);
+    }
 ```
 
-It is not advisable to mix the page navigation with the accumulating records function.
-
-There are also a number of helper functions.
-
+### insert function into controller
 ```php
-    $meetings->hasMorePages();
-    $meetings->isFirstPage();
-    $meetings->totalRecords();
-    $meetings->currentPage();
-    $meetings->lastPage();
-    $meetings->nextPageNumber();
-    $meetings->previousPageNumber();
-    $meetings->firstPage(); // returns first page number which in this case will always be 1
-    $meetings->perPage(); // returns how many results we return per page
+class ZoomController extends Controller
+{
+    use MeetingZoomTrait;
+    
+    public function index()
+    {
+        $zoomData = Test::all();
+        return view('zoom', compact('zoomData'));
+    }
+    
+    public function create()
+    {
+        return view('add_zoom');
+    }
+    
+    public function store(Request $request)
+    {
+        try{
+            //return response()->json($request->all());
+
+            $meeting = $this->createMeeting($request);
+
+            //dd('test');
+
+            Test::create([
+                'user_id'=> 1,
+                'meeting_id'=> $meeting->id,
+                'topic'=> $request->topic,
+                'start_time'=> $request->start_time,
+                'duration'=> $meeting->duration,
+                'password'=> $meeting->password,
+                'start_url'=> $meeting->start_url,
+                'join_url'=> $meeting->join_url,
+            ]);
+
+            return redirect()->route('zoom.index');
+        } catch (\Exception $e){
+            //dd('error');
+
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
+    }
+}
 ```
-
-As noted above we are using collections as the base for the record sets, so anything that is possible in collections is possible here.  As Zoom's ability to filter is limited we can use the collections 'where' function for example.
-
-### Persisting Models
-
-Again, the aim is to be similar to laravel, so you can utilise the save, create, update and make methods.
-
-#### Save
-
-To save a model we will use the save method, this will determine if the model is a new model or an existing and insert or update the model as needed.
-
-``` php
-    $user = Zoom::user()->find('id');
-
-    $user->first_name = 'changed';
-
-    $user->save();
-```
-
-#### Create
-
-Currently, only the User model and Role model can be created directly, most other models need to be created as part of a relationship, see below for details.
-
-To create a user.
-
-``` php
-  Zoom::user()->create([
-        'first_name' => 'First Name',
-        'last_name' => 'Last Name',
-        'email' => 'test@test.com',
-        'password' => 'secret'
-    ]); 
-    // will return the created model so you can capture it if required.
-    $user = Zoom::user()->create([
-        'first_name' => 'First Name',
-        'last_name' => 'Last Name',
-        'email' => 'test@test.com',
-        'password' => 'secret'
-    ]); 
-```
-
-#### Make
-
-Make is similar to create except it will not persist the model to the API.  This is handy for relationship models, more on this below.
-
-``` php
-    $meeting = Zoom::meeting()->make([...]); 
-
-    Zoom::user()->find('id')->meetings()->save($meeting); 
-```
-
-#### Update
-
-We can also mass update attributes.
-
-``` php
-    $user = Zoom::user()->find('id')->update(['field' => 'value', 'another_field' => 'value']);
-```
-
-### Relationships
-
-A major change to the newer versions of our API client is we use Relationships similar to Laravel. To retrieve all meetings associated to a user we would call like so.
-
+### Create route
 ```php
-    $meetings = Zoom::user()->find(...)->meetings;
+Route::get('/zoom', [ZoomController::class, 'index'])->name('zoom.index');
+Route::get('/create-zoom', [ZoomController::class, 'create'])->name('zoom.create');
+Route::post('/store-zoom', [ZoomController::class, 'store'])->name('zoom.store');
 ```
+#### ========================== Enjoy coding =====================
 
-In the Zoom API some relationships get returned direct with the parent model, some we have to make additional API calls for (this is worthwhile knowing for performance reasons and API rate limits).
-
-Its also worth pointing out that we are returning the resultset by calling ->meetings.  If we call the function ->meetings() we receive the relationship object which can be further queried.
-
-```php
-    $meetings = Zoom::user()->find(...)->settings(); // Returns HasOne relationship model
-
-    $meetings = Zoom::user()->find(...)->meetings(); // Returns HasMany relationship model
-```
-
-The later is handy when we need to filter results
-
-```php
-    $meetings = Zoom::user()->find(...)->meetings()->where('type', 'scheduled')->get();
-```
-
-As noted above, Zoom has very limited queryable filters, so check with the Zoom documentation.
-
-#### Save & Create
-
-We can utilise the create and save functions on the relationship model to create models that require a relationship.
-
-``` php
-    // Save Method
-
-    $meeting = Zoom::meeting()->make([...]); 
-    Zoom::user()->find('id')->meetings()->save($meeting); 
-
-    // Create Method
-
-    Zoom::user()->find('id')->meetings()->create([...]);
-```
-
-We can also utilise the Make and Attach methods for creating and attaching models to a parent without persisting the model.  This is handy for attaching sub models that need to save as part of the parent.
-
-``` php
-    // Create Method
-
-    $meeting = Zoom::user()->find('id')->meetings()->make([...]); 
-
-    $meeting->recurrence()->make([...]); // will attach to parent but not persist
-
-    $meeting->save() // will save meeting and the attached recurrence model.
-
-    // Attach Method
-
-    $meeting = Zoom::meeting()->create([...]); 
-
-    $recurrence = Zoom::meeting()->recurrence()->make([...]);
-    $meeting->attach($recurrence);  // will attach to parent but not persist
-
-    $meeting->save() // will save meeting and the attached recurrence model.
-
-    // The later is very uncommon in Zoom and unlikely to be used due to the setup of relationships, but is an option.
-```
-
-### Validation
-
-Validation is built into the API where possible, and will throw an exception if there are validation errors.  If our own validation fails and the Zoom request returns an error, then we will throw a HTTP exception.
-
-If Validation in the API changes or something is not working, then the best is to amend the request object for the failing model and submit a pull request.
-
-### Resources
-
-We give a brief overview of the common models, we have not included any validation requirements, you will need to check documentation for this.
-
-#### Roles
-
-``` php
-    //To get a new instance
-    
-    Zoom::role();
-
-    // available retrieve functions
-     
-    $role->find($id); // by id
-    $role->all();
-    $role->get();
-    $role->first();
-
-    // No available queries
-
-    // Relationships
-    $role->members // HasMany relationship, returns all users with role
-    $role->privileges // hasOne relationship, list of all privileges
-
-    // Special functions
-     
-    // Assign and remove role from users
-    $role->giveRoleTo($user)
-    $role->removeRoleFrom($user)
-
-    // delete
-    $role->delete(); // Delete (destroy) role.
-```
-
-#### Users
-
-This is the main access for most models in Zoom.
-
-``` php
-    //To get a new instance
-    
-    Zoom::user();
-
-    // available retrieve functions
-     
-    Zoom::user()->find('test@example.com'); // by id or email
-    Zoom::user()->all();
-    Zoom::user()->get();
-    Zoom::user()->first();
-
-    // Available queries
-     
-    Zoom::user()->where('type', 'active')->get(); // Allowed values active, inactive and pending
-    Zoom::user()->where('role_id', *id*)->get(); // Allowed values are from the Roles model.
-
-    // Relationships
-    $user->setting // HasOne relationship
-    $user->meetings // HasMany relationship
-    $user->webinars // HasMany relationship
-    $user->assistants // hasMany relationship
-    $user->schedulers // hasMany relationship
-    $user->permission // hasOne relationship
-    $user->token // hasOne relationship
-    $user->recordings // hasMany relationship
-
-    // Special functions
-     
-    // To set license type
-    $user->setBasic()
-    $user->setLicensed()
-    $user->setOnPrem()
-
-    // Update functions
-    $user->updateProfilePicture($image) // should pass the path to the image
-    $user->updateStatus($status); // Allowed values active, deactivate
-    $user->updatePassword($password); 
-    $user->updateEmail($email);
-
-    // disassociate & delete
-    $user->disassociate(); // Disassociate from current account, user can still login to their own account.
-    $user->delete(); // Delete (destroy) user.
-```
-
-##### User Settings
-
-``` php
-    //To get a new instance
-    
-    Zoom::setting();
-
-    // can only be retrieved through a user
-     
-    $user->settings; 
-
-    // To get sub relations then call the relationship of the setting
-    
-    $user->settings->scheduleMeeting;
-    $user->settings->emailNotification;
-    $user->settings->feature;
-    $user->settings->inMeeting;
-    $user->settings->integration;
-    $user->settings->recording;
-    $user->settings->telephony;
-    $user->settings->tsp;
-
-    // To update a setting
-     
-    $settings = $user->settings;
-    $settings->scheduleMeeting->host_video = false;
-    $settings->save();
-
-    // Available queries
-     
-    $user()->settings()->where('login_type', '0')->get(); // Allowed values 0 => facebook, 1 => google, 99 => API, 100 => Zoom, 101 => SSO
-    // Below not yet setup
-    // $user()->settings()->where('option', 'meeting_authentication')->get(); // Allowed values meeting_authentication, recording_authentication.
-```
-
-#### Meetings
-
-``` php
-    //To get a new instance
-    
-    $meeting = Zoom::meeting();
-
-    // To create we have to go through a user model
-     
-    $meeting = Zoom::user()->find(id)->meetings()->create([...]);
-
-    $meeting = Zoom::meeting()->make([...]);
-    $user = Zoom::user()->find(id)->meetings()->save($meeting);
-
-    // To create a recurring meeting, this is just an example, you need to consult documentation to get the settings you require
-    
-    $meeting = Zoom::meeting()->make([
-      'topic' => 'New meeting',
-      'type' => 8,
-      'start_time' => new Carbon('2020-08-12 10:00:00'), // best to use a Carbon instance here.
-    ]);
-
-    $meeting->recurrence()->make([
-      'type' => 2,
-      'repeat_interval' => 1,
-      'weekly_days' => 2,
-      'end_times' => 5
-    ]);
-
-    $meeting->settings()->make([
-      'join_before_host' => true,
-      'approval_type' => 1,
-      'registration_type' => 2,
-      'enforce_login' => false,
-      'waiting_room' => false,
-    ]);
-
-    $user->meetings()->save($meeting);
-
-    // To retrieve multiple records we need to go through the user model
-
-    $user->meetings()->all();
-    $user->meetings;  // same as above
-    $user->meetings()->get();
-    $user->meetings()->first();
-
-    // available retrieve functions
-     
-    $meeting->find(id); // by id
-
-    // We can update direct
-    
-    Zoom::meeting()->find(id)->update([...]);
-
-    // or by using save function
-    // 
-    $meeting->save();
-
-    // Available queries
-     
-    $user->meetings()->where('type', 'scheduled')->get(); // Allowed values scheduled, live and upcoming
-
-    // Relationships
-    $meeting->registrants // HasMany relationship
-    $meeting->setting // HasOne relationship
-    $meeting->invitation // HasOne relationship
-    $meeting->occurrences // hasMany relationship
-    $meeting->recurrence // hasOne relationship
-    $meeting->polls // hasMany relationship
-    $meeting->liveStream // hasOne relationship
-    $meeting->registrationQuestions // hasMany relationship
-    $meeting->trackingFields // hasMany relationship
-    $meeting->recording // hasOne relationship
-
-    // Once we have the meeting we can update registrants
-     
-    $registrant = Zoom::meeting()->registrants()->create([...]);
-
-    // or
-     
-    $registrant = Zoom::meetingRegistrant()->make([...]);
-    $meeting->registrants()->save($registrant);
-    
-    // To retrieve occurrences, Zoom requires both meeting and occurrence ID's, so we have to 
-    // first retrieve the meeting
-     
-    $occurrence = Zoom::meeting()->find('...')->occurrences()->find('...');
-
-    // You can then register people to that occurrence
-     
-    $registrant = Zoom::meetingRegistrant()->make([...]);
-    
-    $occurrence->registrants()->save($registrant);
-
-    // Special functions
-     
-    // End Meeting
-    $meeting->endMeeting();
-
-    // delete
-    $meeting->delete($scheduleForReminder); // Delete (destroy) meeting. ScheduleForReminder true by default
-
-    //Delete Meeting Recording
-    $meeting->recording->delete();  //Delete (destroy) the recording of the meeting.
-```
-
-#### Webinars
-
-``` php
-    //To get a new instance
-    
-    $webinar = Zoom::webinar();
-
-    // To create we have to go through a user model
-     
-    $webinar = Zoom::user()->find(id)->webinars()->create([...]);
-
-    $webinar = Zoom::webinar()->make([...]);
-    $user = Zoom::user()->find(id)->webinars()->save($webinar);
-    
-    // To create a recurring meeting, this is just an example, you need to consult documentation to get the settings you require
-    
-    $webinar = Zoom::webinar()->make([
-      'topic' => 'New webinar',
-      'type' => 8,
-      'start_time' => new Carbon('2020-08-12 10:00:00'), // best to use a Carbon instance here.
-    ]);
-
-    $webinar->recurrence()->make([
-      'type' => 2,
-      'repeat_interval' => 1,
-      'weekly_days' => 2,
-      'end_times' => 5
-    ]);
-
-    $webinar->settings()->make([
-      'approval_type' => 1,
-      'registration_type' => 2,
-      'enforce_login' => false,
-    ]);
-
-    $user->webinars()->save($webinar);
-
-    // To retrieve multiple records we need to go through the user model
-
-    $user->webinars()->all();
-    $user->webinars;  // same as above
-    $user->webinars()->get();
-    $user->webinars()->first();
-
-    // available retrieve functions
-     
-    $webinar->find(id); // by id
-
-    // We can update direct
-    
-    Zoom::webinar()->find(id)->update([...]);
-
-    // or use the save function
-    
-    $webinar->save();
-
-    // Relationships
-    $webinar->registrants // HasMany relationship
-    $webinar->panelists // HasMany relationship
-    $webinar->setting // HasOne relationship
-    $webinar->invitation // HasOne relationship
-    $webinar->occurrences // hasMany relationship
-    $webinar->recurrence // hasOne relationship
-    $webinar->polls // hasMany relationship
-    $webinar->registrationQuestions // hasMany relationship
-    $webinar->trackingSources // hasMany relationship
-    $webinar->trackingFields // hasMany relationship
-
-    // To retrieve an occurrence, Zoom requires both webinar and occurnce ID's, so we have to 
-    // first retrieve the webinar
-     
-    $occurrence = Zoom::webinar()->find('...')->occurrences()->find('...');
-
-    // You can retrieve all occurrences
-    
-    $occurrence = Zoom::webinar()->find('...')->occurrences;
-
-    // Once we have the webinar we can update registrants / panelists
-     
-    $registrant = Zoom::webinarRegistrant()->create([...]);
-
-    $webinar->registrants()->save($registrant);
-
-    $registrant = Zoom::panelist()->create([...]);
-
-    $webinar->panelists()->save($panelist);
-
-    // Special functions
-     
-    // End Webinar
-    $webinar->endWebinar()
-
-    // delete
-    $webinar->delete(); // Delete (destroy) webinar.
-```
-
-#### Meeting/Webinar Occurrences
-
-We are showing info for meeting, you will need to switch out meeting to webinar for webinars.
-
-``` php
-    // cant be instantiated or created directly, has to be created by setting up a recurrence
-    // model on Meeting/Webinar Creation
-    //
-    // To retrieve occurrences we need to go through the meeting/webinar model, 
-    // 
-    // Only try to retrieve for a meeting/webinar that recurs, otherwise you will just get returned a
-    // meeting/webinar model which will throw an error.
-
-    $meeting->occurrences; // returns MeetingOccurrence model / WebinarOccurrences model
-
-    // To get an occurrence
-
-    $occurrence = $meeting->occurrences()->find(*id*); // Returns an Occurence model
-
-    // Once we have the recurrence we can update registrants / panelists to that occurrence instance
-     
-    $registrant = Zoom::meetingRegistrant()->create([...]);
-
-    $occurrence->registrants()->save($registrant);
-
-    // Relationships
-    $occurrence->registrants // HasMany relationship (meeting only)
-
-    // An occurrence can also be updated directly
-    $occurrence->save(); // update only, can't be created directly.
-    
-    // Single occurrences can also be deleted
-    $occurrence->delete();
-```
-
-#### Meeting/Webinar Settings
-
-We are showing info for meeting, you will need to switch out meeting to webinar for webinars.
-
-``` php
-    //To get a new instance
-    
-    $settings = Zoom::meetingSetting();
-
-    // To create we have to go through a meeting model
-     
-    $setting = $meeting->settings()->create([...]);
-
-    $settings = Zoom::meetingSetting()->make([...]);
-    $meeting = $meeting->settings()->save($settings);
-
-    // To retrieve settings we need to go through the meeting model
-
-    $meeting->settings; // returns MeetingSetting model / WebinarSettings model
-
-    // Relationships
-    $setting->globalDialInNumbers // HasMany relationship (meeting only)
-    $setting->globalDialInCountries // HasMany relationship
-```
-
-#### Past Meetings
-
-Coming soon
-
-
-#### Past Webinars
-
-Coming soon
-
+### Reference gitHub link
 ```bash
 https://github.com/MacsiDigital/laravel-zoom
 ```
-## To Do's
 
-- Documentation Site
-- Documentation for other Meeting/Webinar relationships
-- Documentation for Past Meetings & Past Webinars
-- OAuth2 implementation
-- Tests
+*** Copyright@reserved by [**rahridoy.com**](https://rahridoy.com/) ***

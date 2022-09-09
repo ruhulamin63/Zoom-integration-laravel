@@ -37,10 +37,10 @@
                     <td>{{ $data->duration }}</td>
                     <td>{{ $data->password }}</td>
                     <td>
-                        <a href="{{$data->start_url}}">{{ Str::limit($data->start_url, 20) }}</a>
+                        <a href="{{$data->start_url}}" class="btn btn-primary">Start</a>
                     </td>
                     <td>
-                        <a href="{{$data->join_url}}">{{ Str::limit($data->join_url, 20) }}</a>
+                        <a href="{{$data->join_url}}" class="btn btn-primary">Join</a>
                     </td>
                 </tr>
             @endforeach
