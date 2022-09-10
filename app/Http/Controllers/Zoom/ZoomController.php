@@ -21,6 +21,9 @@ class ZoomController extends Controller
     public function index()
     {
         $zoomData = Test::all();
+
+        return dd($zoomData);
+
         return view('zoom', compact('zoomData'));
     }
 
@@ -110,6 +113,16 @@ class ZoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $meeting = Zoom::meeting()->find($id);
+            $meeting->delete();
+
+            Test::where('id', $id)->delete();
+
+            return redirect()->back()->route('zoom.index');
+
+        } catch (\Exception $ex){
+            return redirect()->back()->with(['error' => $ex->getMessage()]);
+        }
     }
 }

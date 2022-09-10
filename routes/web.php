@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Route::get('/zoom', [ZoomController::class, 'index'])->name('zoom.index');
+Route::get('/', [ZoomController::class, 'index'])->name('zoom.index');
 Route::get('/create-zoom', [ZoomController::class, 'create'])->name('zoom.create');
 Route::post('/store-zoom', [ZoomController::class, 'store'])->name('zoom.store');
+Route::delete('/delete-zoom', [ZoomController::class, 'destroy'])->name('zoom.delete');

@@ -129,7 +129,6 @@ https://marketplace.zoom.us/develop/apps/idw-K0NASLmpKlm9ldj17w/credentials
             <th>Start Time</th>
             <th>Duration</th>
             <th>Password</th>
-            <th>Start Url</th>
             <th>Join Url</th>
         </tr>
         </thead>
@@ -141,9 +140,6 @@ https://marketplace.zoom.us/develop/apps/idw-K0NASLmpKlm9ldj17w/credentials
                     <td>{{ $data->start_time }}</td>
                     <td>{{ $data->duration }}</td>
                     <td>{{ $data->password }}</td>
-                    <td>
-                        <a href="{{$data->start_url}}" class="btn btn-primary">Start</a>
-                    </td>
                     <td>
                         <a href="{{$data->join_url}}" class="btn btn-primary">Join</a>
                     </td>
@@ -216,8 +212,8 @@ php artisan make:controller zoom/ZoomController
             'duration' => $request->duration,
             'password' => $request->password,
             'start_time' => $request->start_time,
-            //'timezone' => config('zoom.timezone'),
-            'timezone' => 'Asia/Dhaka',
+            'timezone' => config('zoom.timezone'),
+//            'timezone' => 'Asia/Dhaka',
         ];
 
         $meeting = Zoom::meeting()->make($meetingData);
