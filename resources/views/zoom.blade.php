@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Schedule List</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-    <div>
+    <div class="card-header">
         <a href="{{ route('zoom.create') }}" type="button" class="btn btn-success">Create</a>
     </div>
     <table class="table">
@@ -24,8 +24,8 @@
             <th>Start Time</th>
             <th>Duration</th>
             <th>Password</th>
-            <th>Start Url</th>
             <th>Join Url</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -37,10 +37,13 @@
                     <td>{{ $data->duration }}</td>
                     <td>{{ $data->password }}</td>
                     <td>
-                        <a href="{{$data->start_url}}" class="btn btn-primary">Start</a>
+                        <a href="{{$data->join_url}}" class="btn btn-primary">Join Now</a>
                     </td>
                     <td>
-                        <a href="{{$data->join_url}}" class="btn btn-primary">Join</a>
+                      <form action="{{ route('zoom.delete') }}" method="DELETE">
+                          @csrf
+                          <a href="{{ route('zoom.delete', [$data->id]) }}" class="btn btn-xs btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                      </form>
                     </td>
                 </tr>
             @endforeach
